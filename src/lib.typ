@@ -1,4 +1,4 @@
-#import "@preview/glossarium:0.4.1": gls, glspl
+#import "@preview/glossarium:0.5.4": gls, glspl
 #import "@preview/codly:1.0.0": *
 
 #import "utils.typ": *
@@ -89,7 +89,7 @@
       plural: "",
       long: "",
       longplural: "",
-      desc: none,
+      description: none,
       group: "",
     ),
   ),
@@ -110,7 +110,7 @@
   body
 ) = {
   import "@preview/hydra:0.5.1": hydra
-  import "@preview/glossarium:0.4.1": make-glossary as make-list-of-abbreviations, print-glossary as print-list-of-abbreviations
+  import "@preview/glossarium:0.5.4": make-glossary, register-glossary, print-glossary, gls, glspl
   
   import "dictionary.typ": *
   import "cover_sheet.typ": *
@@ -140,7 +140,7 @@
 
   use-dictionary()
   
-  show: make-list-of-abbreviations
+  show: make-glossary
   show: codly-init.with()
 
   if is-not-none-or-empty(date) == false {
@@ -298,13 +298,14 @@
   }
 
   // List of Abbreviations
-  if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations){
+  if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) and list-of-abbreviations.count() > 0 {
     if is-not-none-or-empty(list-of-abbreviations.at(0).key) and is-not-none-or-empty(list-of-abbreviations.at(0).short) {
       page(
         numbering: "I"
       )[
         #heading(depth: 1)[ #txt-list-of-abbreviations ]
-        #print-list-of-abbreviations(list-of-abbreviations)
+        #print-glossary(list-of-abbreviations)
+        #register-glossary(list-of-abbreviations)
       ]
     }
   }
