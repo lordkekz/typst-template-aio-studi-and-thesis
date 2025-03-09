@@ -140,7 +140,6 @@
 
   use-dictionary()
   
-  show: make-glossary
   show: codly-init.with()
 
   if is-not-none-or-empty(date) == false {
@@ -299,13 +298,14 @@
 
   // List of Abbreviations
   if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) {
+    show: make-glossary
     if is-not-none-or-empty(list-of-abbreviations.at(0).key) and is-not-none-or-empty(list-of-abbreviations.at(0).short) {
       page(
         numbering: "I"
       )[
         #heading(depth: 1)[ #txt-list-of-abbreviations ]
-        #print-glossary(list-of-abbreviations)
         #register-glossary(list-of-abbreviations)
+        #print-glossary(list-of-abbreviations)
       ]
     }
   }
