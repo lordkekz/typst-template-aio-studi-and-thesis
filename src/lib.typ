@@ -298,7 +298,7 @@
   }
 
   // List of Abbreviations
-  if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) and list-of-abbreviations.count() > 0 {
+  if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) {
     if is-not-none-or-empty(list-of-abbreviations.at(0).key) and is-not-none-or-empty(list-of-abbreviations.at(0).short) {
       page(
         numbering: "I"
