@@ -384,6 +384,12 @@
         )
       }
     ]
+    else  [
+      #context{
+        set align(center)
+        text(fill: text-color)[ #counter(page).display()]
+      }
+    ]
   )
   
   counter(page).update(1)
