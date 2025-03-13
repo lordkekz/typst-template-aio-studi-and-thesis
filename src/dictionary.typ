@@ -1,4 +1,4 @@
-#import "@preview/linguify:0.4.1": set-database as initialize-dictionary, linguify
+#import "@preview/linguify:0.4.2": set-database as initialize-dictionary, linguify
 
 #let use-dictionary() = initialize-dictionary(toml("lang.toml"))
 
