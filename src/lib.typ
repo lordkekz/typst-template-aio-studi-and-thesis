@@ -181,14 +181,15 @@
   pagebreak()
 
   // Content basics
-  show heading.where(level: 1): set text(fill: primary-color)
+  show heading.where(level: 1): set text(fill: text-color, size: 1.4em)
   show heading.where(level: 1): it => if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
   
   set page(
     numbering: none,
     header: context {
+      set par(spacing: 2 * line-spacing)
       if thesis-compliant {
-        text(weight: "bold", size: 8.5pt)[
+        text(weight: "bold", size: 8.5pt, fill: text-color)[
           #let h1 = hydra(1, skip-starting: false)
 
           #let numbered-heading = to-string(h1).split(regex("[.]\s")).at(1, default: none)
@@ -202,17 +203,19 @@
             counter(page).display(here().page-numbering())
           }
         ]
-        v(-1em)
-        line(length: 100%, stroke: 1.2pt + text-color)
+        v(-.9em)
+        line(length: 100%, stroke: 1.5pt + background-color)
       }
     }
   )
 
   set par(
+    first-line-indent: 1em,
+    spacing: line-spacing,
     leading: line-spacing,
-    justify: true
+    justify: true,
   )
-  
+
   set text(
     hyphenate: hyphenate
   )
