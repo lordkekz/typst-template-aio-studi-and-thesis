@@ -3,18 +3,6 @@
 # aio-studi-and-thesis: All-in-one template for students and theses
 
 <p align="center">
-  <a href="https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis/blob/main/docs/manual-de.pdf">
-    <img alt="Manual DE" src="https://img.shields.io/website?down_message=offline&label=manual%20de&up_color=007aff&up_message=online&url=https%3A%2F%2Fgithub.com%2Ffuchs-fabian%2Ftypst-template-aio-studi-and-thesis%2Fblob%2Fmain%2Fdocs%2Fmanual-de.pdf" />
-  </a>
-  <a href="https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis/blob/main/docs/manual-en.pdf">
-    <img alt="Manual EN" src="https://img.shields.io/website?down_message=offline&label=manual%20en&up_color=007aff&up_message=online&url=https%3A%2F%2Fgithub.com%2Ffuchs-fabian%2Ftypst-template-aio-studi-and-thesis%2Fblob%2Fmain%2Fdocs%2Fmanual-en.pdf" />
-  </a>
-  <a href="https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis/blob/main/docs/example-de-thesis.pdf">
-    <img alt="Example DE" src="https://img.shields.io/website?down_message=offline&label=example%20de&up_color=007aff&up_message=online&url=https%3A%2F%2Fgithub.com%2Ffuchs-fabian%2Ftypst-template-aio-studi-and-thesis%2Fblob%2Fmain%2Fdocs%2Fexample-de-thesis.pdf" />
-  </a>
-  <a href="https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis/blob/main/docs/example-en-thesis.pdf">
-    <img alt="Example EN" src="https://img.shields.io/website?down_message=offline&label=example%20en&up_color=007aff&up_message=online&url=https%3A%2F%2Fgithub.com%2Ffuchs-fabian%2Ftypst-template-aio-studi-and-thesis%2Fblob%2Fmain%2Fdocs%2Fexample-en-thesis.pdf" />
-  </a>
   <a href="https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis/blob/main/LICENSE">
     <img alt="MIT License" src="https://img.shields.io/badge/license-MIT-brightgreen">
   </a>
@@ -46,9 +34,9 @@ Typst will create a new directory with all the files needed to get you started.
 
 ## Usage
 
-The template ([rendered PDF (DE)](docs/example-de-thesis.pdf)) contains thesis writing advice (in German) as example content.
+The [example PDF (DE)] contains thesis writing advice (in German). Attention, the font is not displayed correctly in the linked PDF ([GitHub Issue](https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis/issues/3))!
 
-If you are looking for the details of this template package's function, take a look at the [german manual](docs/manual-de.pdf) or the [english manual](docs/manual-en.pdf).
+If you are looking for the details of this template package's function, take a look at the [german manual] or the [english manual].
 
 > `Roboto` is used as the default font. Please note accordingly if you want to use exactly this font. Otherwise, please change it. This may be necessary if you do not use Typst via the web app.
 
@@ -81,3 +69,9 @@ If you think this template is useful and saves you a lot of work and nerves (Wor
   -->
   <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" style="height: 90px; width: 217px;" alt="Donate with PayPal"/>
 </a>
+
+<!-- URLs for docs -->
+
+[example PDF (DE)]: https://github.com/typst/packages/blob/main/packages/preview/aio-studi-and-thesis/0.1.1/docs/example-de-thesis.pdf
+[german manual]: https://github.com/typst/packages/blob/main/packages/preview/aio-studi-and-thesis/0.1.1/docs/manual-de.pdf
+[english manual]: https://github.com/typst/packages/blob/main/packages/preview/aio-studi-and-thesis/0.1.1/docs/manual-en.pdf
