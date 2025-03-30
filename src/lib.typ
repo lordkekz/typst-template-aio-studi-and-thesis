@@ -387,7 +387,7 @@
     else  [
       #context{
         set align(center)
-        text(fill: text-color)[ #counter(page).display()]
+        text(fill: text-color)[ #counter(page).display() ]
       }
     ]
   )
