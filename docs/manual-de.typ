@@ -5,7 +5,7 @@
   authors: (
     (name: "Fabian Fuchs"),
   ),
-  title: "aio-studi-and-thesis v0.1.0",
+  title: "aio-studi-and-thesis v0.1.1",
   subtitle: "Deutsches Handbuch",
   cover-sheet: (
     cover-image: none,
