@@ -1,3 +1,5 @@
+<!-- Reference: https://github.com/typst-community/typst-package-template -->
+
 # aio-studi-and-thesis: All-in-one template for students and theses
 
 <p align="center">
@@ -32,7 +34,7 @@ To make it suitable for theses, only one parameter needs to be changed.
 
 ## Getting Started
 
-You can use this template in the Typst web app by clicking “Start from template” on the dashboard and searching for `aio-studi-and-thesis`.
+You can use this [template](https://typst.app/universe/package/aio-studi-and-thesis) in the Typst web app by clicking “Start from template” on the dashboard and searching for `aio-studi-and-thesis`.
 
 Alternatively, you can use the CLI to kick this project off using the command
 
@@ -48,12 +50,12 @@ The template ([rendered PDF (DE)](docs/example-de-thesis.pdf)) contains thesis w
 
 If you are looking for the details of this template package's function, take a look at the [german manual](docs/manual-de.pdf) or the [english manual](docs/manual-en.pdf).
 
-> Roboto is used as the default font. Please note accordingly if you want to use exactly this font.
+> `Roboto` is used as the default font. Please note accordingly if you want to use exactly this font. Otherwise, please change it. This may be necessary if you do not use Typst via the web app.
 
 ## Example configuration
 
 ```typ
-#import "@preview/aio-studi-and-thesis:0.1.0": *
+#import "@preview/aio-studi-and-thesis:0.1.1": *
 
 #show: project.with(
   lang: "de",
@@ -73,4 +75,9 @@ If you are looking for the details of this template package's function, take a l
 
 If you think this template is useful and saves you a lot of work and nerves (Word and LaTex can be very tiring) and lets you sleep better, then a small donation would be very nice.
 
-[![Paypal](https://www.paypalobjects.com/de_DE/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate/?hosted_button_id=4G9X8TDNYYNKG)
+<a href="https://www.paypal.com/donate/?hosted_button_id=4G9X8TDNYYNKG" target="_blank">
+  <!--
+    https://github.com/stefan-niedermann/paypal-donate-button
+  -->
+  <img src="https://raw.githubusercontent.com/stefan-niedermann/paypal-donate-button/master/paypal-donate-button.png" style="height: 90px; width: 217px;" alt="Donate with PayPal"/>
+</a>

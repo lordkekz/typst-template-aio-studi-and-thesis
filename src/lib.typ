@@ -1,5 +1,5 @@
 #import "@preview/glossarium:0.5.4": gls, glspl
-#import "@preview/codly:1.2.0": *
+#import "@preview/codly:1.3.0": *
 
 #import "utils.typ": *
 
@@ -109,7 +109,7 @@
   
   body
 ) = {
-  import "@preview/hydra:0.5.1": hydra
+  import "@preview/hydra:0.6.0": hydra
   import "@preview/glossarium:0.5.4": make-glossary, register-glossary, print-glossary, gls, glspl
   
   import "dictionary.typ": *
@@ -387,7 +387,7 @@
     else  [
       #context{
         set align(center)
-        text(fill: text-color)[ #counter(page).display()]
+        text(fill: text-color)[ #counter(page).display() ]
       }
     ]
   )
