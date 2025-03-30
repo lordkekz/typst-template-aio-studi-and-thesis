@@ -2,7 +2,7 @@
 
 [package]
 name = "aio-studi-and-thesis"
-version = "0.1.0"
+version = "0.1.1"
 entrypoint = "src/lib.typ"
 authors = [
 	"Fabian Fuchs <https://github.com/fuchs-fabian/>"
@@ -14,7 +14,7 @@ repository = "https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesi
 keywords = ["Bachelorarbeit", "Masterarbeit", "Dokumentation", "Documentation", "aio", "thesis"]
 categories = ["thesis"]
 disciplines = ["computer-science"]
-compiler = "0.11.1"
+compiler = "0.13.1"
 exclude = [
 	".github",
 	"docs",

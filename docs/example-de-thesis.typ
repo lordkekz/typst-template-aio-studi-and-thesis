@@ -89,7 +89,7 @@
       plural: "",
       long: "University of Applied Typst Sciences",
       longplural: "",
-      desc: [
+      description: [
         Universität, welche eigentlich nicht existiert
       ],
       group: "University",
@@ -98,7 +98,7 @@
       key: "repo-vorlage",
       short: "aio-studi-and-thesis",
       long: "Repository der aktuellen Typst-Vorlage",
-      desc: [
+      description: [
         #link("https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis")
       ]
     ),

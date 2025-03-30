@@ -5,7 +5,7 @@
     plural: "",
     long: "Repository der aktuellen Typst-Vorlage",
     longplural: "",
-    desc: [
+    description: [
       #link("https://github.com/fuchs-fabian/typst-template-aio-studi-and-thesis")
     ],
     group: "",
@@ -16,7 +16,7 @@
     plural: "",
     long: "",
     longplural: "",
-    desc: [
+    description: [
         
     ],
     group: "",

@@ -88,7 +88,7 @@
   depth-toc: 4,
   outlines-indent: 1em,
   show-list-of-figures: false,      // Wird immer angezeigt, wenn `thesis-compliant` true ist
-  show-list-of-abbreviations: true, // Nur sichtbar, wenn tatsächlich mit `gls` oder `glspl` Abkürzungen im Text aufgerufen werden
+  show-list-of-abbreviations: true, // Achtung: Schlägt fehl wenn glossary leer ist und trotzdem dargestellt werden soll!
   list-of-abbreviations: abbreviations(),
   show-list-of-formulas: true, // Setze es auf false, wenn es nicht angezeigt werden soll
   custom-outlines: ( // none
