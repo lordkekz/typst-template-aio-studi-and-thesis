@@ -155,7 +155,7 @@ If certain dictionaries are used, care must be taken to ensure that parameters w
       plural: "",
       long: "",
       longplural: "",
-      desc: none,
+      description: none,
       group: "",
     ),
   ),

@@ -276,7 +276,7 @@ list-of-abbreviations: (
     plural: "",
     long: "University of Applied Typst Sciences",
     longplural: "",
-    desc: [
+    description: [
       Universität, welche eigentlich nicht existiert
     ],
     group: "University",

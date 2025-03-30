@@ -153,7 +153,7 @@ Wenn bestimmte Dictionaries verwendet werden, muss darauf geachtet werden, dass 
       plural: "",
       long: "",
       longplural: "",
-      desc: none,
+      description: none,
       group: "",
     ),
   ),
