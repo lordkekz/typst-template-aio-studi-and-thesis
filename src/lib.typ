@@ -184,22 +184,23 @@
   show heading.where(level: 1): it => if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
   
   set page(
-    numbering: "1",
+    numbering: none,
     header: context {
       if thesis-compliant {
-        align(
-          left,
-          text(weight: "bold", size: 8.5pt)[
-            #let h1 = hydra(1, skip-starting: false)
+        text(weight: "bold", size: 8.5pt)[
+          #let h1 = hydra(1, skip-starting: false)
 
-            #let numbered-heading = to-string(h1).split(regex("[.]\s")).at(1, default: none)
-            #if numbered-heading != none {
-              numbered-heading
-            } else {
-              h1
-            }
-          ]
-        )
+          #let numbered-heading = to-string(h1).split(regex("[.]\s")).at(1, default: none)
+          #if numbered-heading != none {
+            numbered-heading
+          } else {
+            h1
+          }
+          #h(1fr)
+          #if here().page-numbering() != none {
+            counter(page).display(here().page-numbering())
+          }
+        ]
         v(-1em)
         line(length: 100%, stroke: 1.2pt + text-color)
       }
@@ -230,44 +231,22 @@
 
   show link: set text(fill: secondary-color.darken(60%))
 
-  // Declaration
-  if is-not-none-or-empty(custom-declaration) {
-    page(
-      header: "",
-      footer: ""
-    )[
-      #custom-declaration
-    ]
-  }
-  else if thesis-compliant and is-not-none-or-empty(declaration-on-the-final-thesis) {
-    page(
-      header: "",
-      footer: ""
-    )[
-      #get-declaration-on-the-final-thesis(
-        lang: lang,
-        legal-reference: declaration-on-the-final-thesis.legal-reference,
-        thesis-name: declaration-on-the-final-thesis.thesis-name,
-        consent-to-publication-in-the-library: declaration-on-the-final-thesis.consent-to-publication-in-the-library,
-        genitive-of-university: declaration-on-the-final-thesis.genitive-of-university
-      )
-    ]
-  }
-
   // Abstract
   if is-not-none-or-empty(abstract) {
     page(
-      numbering: "I"
+      // numbering: "I"
+      header: none,
     )[
       #counter(page).update(1)
-      #heading(depth: 1)[ #txt-abstract ]
+      #heading(depth: 1, outlined: false)[ #txt-abstract ]
       #abstract
     ]
   }
 
   // Table of contents (TOC)
   page(
-    numbering: none
+    // numbering: "I"
+    header: none,
   )[
     #if is-not-none-or-empty(abstract) == false { counter(page).update(1) }
       
@@ -283,11 +262,11 @@
   ]
 
   // List of Figures
-  if thesis-compliant or show-list-of-figures {
+  if show-list-of-figures {
     page(
-      numbering: "I"
+      // numbering: "I"
     )[
-      #heading(depth: 1)[ #txt-list-of-figures ]
+      #heading(depth: 1, outlined: false)[ #txt-list-of-figures ]
 
       #simple-outline(
         indent: outlines-indent,
@@ -301,9 +280,9 @@
     show: make-glossary
     if is-not-none-or-empty(list-of-abbreviations.at(0).key) and is-not-none-or-empty(list-of-abbreviations.at(0).short) {
       page(
-        numbering: "I"
+        // numbering: "I"
       )[
-        #heading(depth: 1)[ #txt-list-of-abbreviations ]
+        #heading(depth: 1, outlined: false)[ #txt-list-of-abbreviations ]
         #register-glossary(list-of-abbreviations)
         #print-glossary(list-of-abbreviations)
       ]
@@ -321,7 +300,7 @@
   
   if show-list-of-formulas {  
     page(
-      numbering: "I"
+      // numbering: "I"
     )[
       #simple-outline(
         title: txt-list-of-formulas,
@@ -336,7 +315,7 @@
     for o in custom-outlines {
       if o.title != none and o.custom != none {
         page(
-          numbering: "I"
+          // numbering: "I"
         )[
           #if is-not-none-or-empty(o.title) {
             heading(depth: 1)[ #o.title ]
@@ -350,7 +329,7 @@
   // List of Tables
   if show-list-of-tables {
     page(
-      numbering: "I"
+      // numbering: "I"
     )[
       #simple-outline(
         title: txt-list-of-tables,
@@ -359,9 +338,12 @@
       )
     ]
   }
+  
+  counter(page).update(1)
 
   // Body
   set page(
+    numbering: "1",
     footer: if thesis-compliant == false [
       #set text(weight: "regular")
       #let size = 11pt
@@ -391,8 +373,6 @@
       }
     ]
   )
-  
-  counter(page).update(1)
 
   let todos() = context {
     let elems = query(<todo>)
@@ -412,19 +392,19 @@
   
   body
 
-  // Literature, bibliography, attachements
+  // Literature, bibliography, attachments
   set heading(numbering: none)
 
   if is-not-none-or-empty(literature-and-bibliography) {
     page[
-      #heading(depth: 1)[ #txt-literature-and-bibliography ]
+      #heading(depth: 1, outlined: false)[ #txt-literature-and-bibliography ]
       #literature-and-bibliography
     ]
   }
 
-  if is-not-none-or-empty(list-of-attachements) and (thesis-compliant or list-of-attachements.at(0).a != none) {
+  if is-not-none-or-empty(list-of-attachements) and list-of-attachements.at(0).a != none {
     page[
-      #heading(depth: 1)[ #txt-list-of-attachements ]
+      #heading(depth: 1, outlined: false)[ #txt-list-of-attachements ]
 
       #v(1.5em)
       
@@ -434,6 +414,30 @@
         v(1em)
         index = index + 1
       }
+    ]
+  }
+
+  // Declaration
+  if is-not-none-or-empty(custom-declaration) {
+    page(
+      header: "",
+      footer: ""
+    )[
+      #custom-declaration
+    ]
+  }
+  else if thesis-compliant and is-not-none-or-empty(declaration-on-the-final-thesis) {
+    page(
+      header: "",
+      footer: ""
+    )[
+      #get-declaration-on-the-final-thesis(
+        lang: lang,
+        legal-reference: declaration-on-the-final-thesis.legal-reference,
+        thesis-name: declaration-on-the-final-thesis.thesis-name,
+        consent-to-publication-in-the-library: declaration-on-the-final-thesis.consent-to-publication-in-the-library,
+        genitive-of-university: declaration-on-the-final-thesis.genitive-of-university
+      )
     ]
   }
 }
