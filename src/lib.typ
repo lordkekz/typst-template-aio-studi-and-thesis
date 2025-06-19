@@ -227,10 +227,16 @@
       #context it.counter.display(it.numbering):
       #text(fill: primary-color)[*#it.body*]
     ]
+    #v(.25em)
   ]
   
   show figure.caption.where(kind: image): it => get-figure-caption(it)
   show figure.caption.where(kind: table): it => get-figure-caption(it)
+
+  // Caption above figures like ACM
+  set figure.caption(position: top)
+  // Booktabs rules
+  set table(stroke: none)
 
   show link: set text(fill: secondary-color.darken(60%))
 
