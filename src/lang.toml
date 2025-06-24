@@ -40,7 +40,7 @@ list-of-abbreviations = "List of Abbreviations"
 list-of-formulas = "List of Formulas"
 supplement-formula = "Equation"
 list-of-tables = "List of Tables"
-literature-and-bibliography = "Literature and Bibliography"
+literature-and-bibliography = "Bibliography"
 list-of-attachements = "List of Attachements"
 
 # Other
@@ -109,7 +109,7 @@ list-of-abbreviations = "Abkürzungsverzeichnis"
 list-of-formulas = "Formelverzeichnis"
 supplement-formula = "Formel"
 list-of-tables = "Tabellenverzeichnis"
-literature-and-bibliography = "Literatur- und Quellenverzeichnis"
+literature-and-bibliography = "Quellenverzeichnis"
 list-of-attachements = "Anlagenverzeichnis"
 
 # Other
