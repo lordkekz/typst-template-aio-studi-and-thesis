@@ -225,7 +225,7 @@
     #box[
       #it.supplement
       #context it.counter.display(it.numbering):
-      #text(fill: primary-color)[*#it.body*]
+      #text(fill: text-color)[*#it.body*]
     ]
     #v(.25em)
   ]
