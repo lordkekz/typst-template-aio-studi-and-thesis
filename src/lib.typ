@@ -108,7 +108,7 @@
   ),
   
   body
-) = {
+) = context {
   import "@preview/hydra:0.6.0": hydra
   import "@preview/glossarium:0.5.4": make-glossary, register-glossary, print-glossary, gls, glspl
   
@@ -125,11 +125,13 @@
   )
   
   // Basics
-  set page(
-    paper: "a4",
-    flipped: false,
-    margin: side-margins
-  )
+  if target() == "paged" {
+    set page(
+      paper: "a4",
+      flipped: false,
+      margin: side-margins
+    )
+  }
 
   set text(
     lang: lang,
@@ -183,6 +185,7 @@
   show heading.where(level: 1): set text(fill: text-color, size: 1.4em)
   show heading.where(level: 1): it => if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
   
+  if target() == "paged" {
   set page(
     numbering: none,
     header: context {
@@ -207,6 +210,7 @@
       }
     }
   )
+  }
 
   set par(
     first-line-indent: 1em,
@@ -242,6 +246,7 @@
 
   // Abstract
   if is-not-none-or-empty(abstract) {
+    if target() == "paged" {
     page(
       // numbering: "I"
       header: none,
@@ -250,9 +255,11 @@
       #heading(depth: 1, outlined: false)[ #txt-abstract ]
       #abstract
     ]
+    }
   }
 
   // Table of contents (TOC)
+  if target() == "paged" {
   page(
     // numbering: "I"
     header: none,
@@ -297,6 +304,7 @@
       ]
     }
   }
+  }
   
   // List of Formulas
   set math.equation(numbering: if thesis-compliant or show-list-of-formulas { "(1)" } else { none }, supplement: [#txt-supplement-formula])
@@ -307,6 +315,7 @@
     #v(0.5em)
   ]
   
+  if target() == "paged" {
   if show-list-of-formulas {  
     page(
       // numbering: "I"
@@ -382,6 +391,7 @@
       }
     ]
   )
+  }
 
   let todos() = context {
     let elems = query(<todo>)
@@ -426,6 +436,7 @@
     ]
   }
 
+  if target() == "paged" {
   // Declaration
   if is-not-none-or-empty(custom-declaration) {
     page(
@@ -448,5 +459,6 @@
         genitive-of-university: declaration-on-the-final-thesis.genitive-of-university
       )
     ]
+  }
   }
 }
