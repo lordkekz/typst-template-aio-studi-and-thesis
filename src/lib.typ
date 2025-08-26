@@ -141,7 +141,7 @@
   use-dictionary()
 
   // Must not be nested away so that it applies to the entire body
-  show: glossy.init-glossary.with(list-of-abbreviations, term-links: true)
+  show: glossy.init-glossary.with(list-of-abbreviations, term-links: false)
   show: codly-init.with()
 
   if is-not-none-or-empty(date) == false {
