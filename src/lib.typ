@@ -124,13 +124,11 @@
   )
   
   // Basics
-  if target() == "paged" {
-    set page(
-      paper: "a4",
-      flipped: false,
-      margin: side-margins
-    )
-  }
+  set page(
+    paper: "a4",
+    flipped: false,
+    margin: side-margins
+  )
 
   set text(
     lang: lang,
@@ -141,6 +139,8 @@
 
   use-dictionary()
   
+  // Must not be nested away so that it applies to the entire body
+  show: init-glossary.with(list-of-abbreviations, term-links: true)
   show: codly-init.with()
 
   if is-not-none-or-empty(date) == false {
@@ -184,32 +184,9 @@
   show heading.where(level: 1): set text(fill: text-color, size: 1.4em)
   show heading.where(level: 1): it => if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
   
-  if target() == "paged" {
   set page(
     numbering: none,
-    header: context {
-      set par(spacing: 2 * line-spacing)
-      if thesis-compliant {
-        text(weight: "bold", size: 8.5pt, fill: text-color)[
-          #let h1 = hydra(1, skip-starting: false)
-
-          #let numbered-heading = to-string(h1).split(regex("[.]\s")).at(1, default: none)
-          #if numbered-heading != none {
-            numbered-heading
-          } else {
-            h1
-          }
-          #h(1fr)
-          #if here().page-numbering() != none {
-            counter(page).display(here().page-numbering())
-          }
-        ]
-        v(-.9em)
-        line(length: 100%, stroke: 1.5pt + background-color)
-      }
-    }
   )
-  }
 
   set par(
     first-line-indent: 1em,
@@ -245,7 +222,6 @@
 
   // Abstract
   if is-not-none-or-empty(abstract) {
-    if target() == "paged" {
     page(
       // numbering: "I"
       header: none,
@@ -254,11 +230,9 @@
       #heading(depth: 1, outlined: false)[ #txt-abstract ]
       #abstract
     ]
-    }
   }
 
   // Table of contents (TOC)
-  if target() == "paged" {
   page(
     // numbering: "I"
     header: none,
@@ -295,6 +269,7 @@
       page(
         // numbering: "I"
       )[
+        #set heading(outlined: false)
         #glossary(
           title: txt-list-of-abbreviations,
           show-all: true,
@@ -302,7 +277,6 @@
           ignore-case: true,
         )
       ]
-  }
   }
   
   // List of Formulas
@@ -314,7 +288,6 @@
     #v(0.5em)
   ]
   
-  if target() == "paged" {
   if show-list-of-formulas {  
     page(
       // numbering: "I"
@@ -355,12 +328,47 @@
       )
     ]
   }
+
+  let todos() = context {
+    let elems = query(<todo>)
+
+    if elems.len() == 0 { return }
+
+    heading(depth: 1)[ TODOs ]
   
-  counter(page).update(1)
+    for body in elems {
+      text([+ #link(body.location(), body.text)], red)
+    }
+  }
+
+  if show-list-of-todos { todos() }
+    
+  counter(page).update(0)
 
   // Body
   set page(
     numbering: "1",
+    header: context {
+      set par(spacing: 2 * line-spacing)
+      if thesis-compliant {
+        text(weight: "bold", size: 8.5pt, fill: text-color)[
+          #let h1 = hydra(1, skip-starting: false)
+
+          #let numbered-heading = to-string(h1).split(regex("[.]\s")).at(1, default: none)
+          #if numbered-heading != none {
+            numbered-heading
+          } else {
+            h1
+          }
+          #h(1fr)
+          #if here().page-numbering() != none {
+            counter(page).display(here().page-numbering())
+          }
+        ]
+        v(-.9em)
+        line(length: 100%, stroke: 1.5pt + background-color)
+      }
+    },
     footer: if thesis-compliant == false [
       #set text(weight: "regular")
       #let size = 11pt
@@ -390,26 +398,8 @@
       }
     ]
   )
-  }
 
-  let todos() = context {
-    let elems = query(<todo>)
-
-    if elems.len() == 0 { return }
-
-    heading(depth: 1)[ TODOs ]
-  
-    for body in elems {
-      text([+ #link(body.location(), body.text)], red)
-    }
-  }
-
-  if show-list-of-todos { todos() }
-  
   set heading(numbering: "1.1.")
-  
-  // Must not be nested away so that it applies to the entire body
-  show: init-glossary.with(list-of-abbreviations)
 
   body
 
@@ -438,7 +428,6 @@
     ]
   }
 
-  if target() == "paged" {
   // Declaration
   if is-not-none-or-empty(custom-declaration) {
     page(
@@ -461,6 +450,5 @@
         genitive-of-university: declaration-on-the-final-thesis.genitive-of-university
       )
     ]
-  }
   }
 }
