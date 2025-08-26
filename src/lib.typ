@@ -1,4 +1,4 @@
-#import "@preview/glossarium:0.5.4": gls, glspl
+#import "@preview/glossy:0.8.0": init-glossary, glossary
 #import "@preview/codly:1.3.0": *
 
 #import "utils.typ": *
@@ -110,7 +110,6 @@
   body
 ) = context {
   import "@preview/hydra:0.6.0": hydra
-  import "@preview/glossarium:0.5.4": make-glossary, register-glossary, print-glossary, gls, glspl
   
   import "dictionary.typ": *
   import "cover_sheet.typ": *
@@ -293,16 +292,17 @@
 
   // List of Abbreviations
   if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) {
-    show: make-glossary
-    if is-not-none-or-empty(list-of-abbreviations.at(0).key) and is-not-none-or-empty(list-of-abbreviations.at(0).short) {
+      show: init-glossary.with(list-of-abbreviations)
       page(
         // numbering: "I"
       )[
-        #heading(depth: 1, outlined: false)[ #txt-list-of-abbreviations ]
-        #register-glossary(list-of-abbreviations)
-        #print-glossary(list-of-abbreviations)
+        #glossary(
+          title: txt-list-of-abbreviations,
+          show-all: true,
+          sort: true,
+          ignore-case: true,
+        )
       ]
-    }
   }
   }
   
