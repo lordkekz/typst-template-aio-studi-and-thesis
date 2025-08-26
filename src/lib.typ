@@ -1,4 +1,4 @@
-#import "@preview/glossy:0.8.0": init-glossary, glossary
+#import "@preview/glossy:0.8.0"
 #import "@preview/codly:1.3.0": *
 
 #import "utils.typ": *
@@ -12,7 +12,7 @@
     (
       name: "Unknown author", // required
       id: "",
-      email: ""
+      email: "",
     ),
   ),
   title: "Unknown title",
@@ -20,41 +20,41 @@
   date: none,
   version: none,
   thesis-compliant: false,
-
   // Format
   side-margins: (
-    left: 3.5cm,  // required
+    left: 3.5cm, // required
     right: 3.5cm, // required
-    top: 3.5cm,   // required
-    bottom: 3.5cm // required
+    top: 3.5cm, // required
+    bottom: 3.5cm, // required
   ),
   h1-spacing: 0.5em,
   line-spacing: 0.65em,
   font: "Roboto",
   font-size: 11pt,
   hyphenate: false,
-
   // Color settings
   primary-color: dark-blue,
   secondary-color: blue,
   text-color: dark-grey,
   background-color: light-blue,
-
   // Cover sheet
   custom-cover-sheet: none,
-  cover-sheet: (    // none
-    university: (   // none
-      name: none,   // required
+  cover-sheet: (
+    // none
+    university: (
+      // none
+      name: none, // required
       street: none, // required
-      city: none,   // required
-      logo: none
-    ), 
-    employer: (     // none
-      name: none,   // required
+      city: none, // required
+      logo: none,
+    ),
+    employer: (
+      // none
+      name: none, // required
       street: none, // required
-      city: none,   // required
-      logo: none
-    ), 
+      city: none, // required
+      logo: none,
+    ),
     cover-image: none,
     description: none,
     faculty: none,
@@ -62,21 +62,19 @@
     semester: none,
     course: none,
     examiner: none,
-    submission-date: none
+    submission-date: none,
   ),
-
   // Declaration
   custom-declaration: none,
-  declaration-on-the-final-thesis: (             // none
-    legal-reference: none,                       // required
-    thesis-name: none,                           // required
+  declaration-on-the-final-thesis: (
+    // none
+    legal-reference: none, // required
+    thesis-name: none, // required
     consent-to-publication-in-the-library: none, // required | true, false
-    genitive-of-university: none                 // required
+    genitive-of-university: none, // required
   ),
-
   // Abstract
   abstract: none,
-
   // Outlines
   depth-toc: 4,
   outlines-indent: 1em,
@@ -84,8 +82,8 @@
   show-list-of-abbreviations: true,
   list-of-abbreviations: (
     (
-      key: "",    // required
-      short: "",  // required
+      key: "", // required
+      short: "", // required
       plural: "",
       long: "",
       longplural: "",
@@ -94,86 +92,114 @@
     ),
   ),
   show-list-of-formulas: false,
-  custom-outlines: ( // none
+  custom-outlines: (
+    // none
     (
-      title: none,   // required
-      custom: none   // required
+      title: none, // required
+      custom: none, // required
     ),
   ),
   show-list-of-tables: false,
   show-list-of-todos: false,
   literature-and-bibliography: none,
-  list-of-attachements: ( // none
-    (a: none),            // required
+  list-of-attachements: (
+    // none
+    (a: none), // required
   ),
-  
-  body
+  body,
 ) = context {
   import "@preview/hydra:0.6.0": hydra
-  
+
   import "dictionary.typ": *
   import "cover_sheet.typ": *
   import "declaration_on_the_final_thesis.typ": *
 
   // Metadata
-  let date-format = if lang == "de" { "[day].[month].[year]" } else { "[day]/[month]/[year]" }
+  let date-format = if lang == "de" { "[day].[month].[year]" } else {
+    "[day]/[month]/[year]"
+  }
 
   set document(
     title: title + if is-not-none-or-empty(version) { " v" + version },
-    author: authors.map(a => a.name)
+    author: authors.map(a => a.name),
   )
-  
+
   // Basics
   set page(
     paper: "a4",
     flipped: false,
-    margin: side-margins
+    margin: side-margins,
   )
 
   set text(
     lang: lang,
     font: font,
     size: font-size,
-    fill: text-color
+    fill: text-color,
   )
 
   use-dictionary()
-  
+
   // Must not be nested away so that it applies to the entire body
-  show: init-glossary.with(list-of-abbreviations, term-links: true)
+  show: glossy.init-glossary.with(list-of-abbreviations, term-links: true)
   show: codly-init.with()
 
   if is-not-none-or-empty(date) == false {
     date = datetime.today().display(date-format)
   }
-  
+
   // Cover Sheet
-  if is-not-none-or-empty(custom-cover-sheet) == false and is-not-none-or-empty(cover-sheet) {
+  if (
+    is-not-none-or-empty(custom-cover-sheet) == false
+      and is-not-none-or-empty(cover-sheet)
+  ) {
     let cover-sheet-dict-contains-key(key) = {
       return dict-contains-key(dict: cover-sheet, key)
     }
-    
+
     get-cover-sheet(
       primary-color: primary-color,
       secondary-color: secondary-color,
       text-color: text-color,
       background-color: background-color,
-      visualise-content-boxes: (flag: false, fill: background-color, stroke: text-color),
-      university: if cover-sheet-dict-contains-key("university") { cover-sheet.university },
-      employer: if cover-sheet-dict-contains-key("employer") { cover-sheet.employer },
-      cover-image: if cover-sheet-dict-contains-key("cover-image") { cover-sheet.cover-image },
+      visualise-content-boxes: (
+        flag: false,
+        fill: background-color,
+        stroke: text-color,
+      ),
+      university: if cover-sheet-dict-contains-key("university") {
+        cover-sheet.university
+      },
+      employer: if cover-sheet-dict-contains-key("employer") {
+        cover-sheet.employer
+      },
+      cover-image: if cover-sheet-dict-contains-key("cover-image") {
+        cover-sheet.cover-image
+      },
       date: date,
       version: version,
       title: title,
       subtitle: subtitle,
-      description: if cover-sheet-dict-contains-key("description") { cover-sheet.description },
+      description: if cover-sheet-dict-contains-key("description") {
+        cover-sheet.description
+      },
       authors: authors,
-      faculty: if cover-sheet-dict-contains-key("faculty") { cover-sheet.faculty },
-      programme: if cover-sheet-dict-contains-key("programme") { cover-sheet.programme },
-      semester: if cover-sheet-dict-contains-key("semester") { cover-sheet.semester },
+      faculty: if cover-sheet-dict-contains-key("faculty") {
+        cover-sheet.faculty
+      },
+      programme: if cover-sheet-dict-contains-key("programme") {
+        cover-sheet.programme
+      },
+      semester: if cover-sheet-dict-contains-key("semester") {
+        cover-sheet.semester
+      },
       course: if cover-sheet-dict-contains-key("course") { cover-sheet.course },
-      examiner: if cover-sheet-dict-contains-key("examiner") { cover-sheet.examiner },
-      submission-date: if cover-sheet-dict-contains-key("submission-date") { cover-sheet.submission-date }
+      examiner: if cover-sheet-dict-contains-key("examiner") {
+        cover-sheet.examiner
+      },
+      submission-date: if cover-sheet-dict-contains-key("submission-date") {
+        cover-sheet.submission-date
+      },
     )
   } else {
     custom-cover-sheet
@@ -182,8 +208,10 @@
 
   // Content basics
   show heading.where(level: 1): set text(fill: text-color, size: 1.4em)
-  show heading.where(level: 1): it => if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
-  
+  show heading.where(level: 1): it => (
+    if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
+  )
+
   set page(
     numbering: none,
   )
@@ -196,7 +224,7 @@
   )
 
   set text(
-    hyphenate: hyphenate
+    hyphenate: hyphenate,
   )
 
   let get-figure-caption(it) = [
@@ -209,7 +237,7 @@
     ]
     #v(.25em)
   ]
-  
+
   show figure.caption.where(kind: image): it => get-figure-caption(it)
   show figure.caption.where(kind: table): it => get-figure-caption(it)
 
@@ -238,7 +266,7 @@
     header: none,
   )[
     #if is-not-none-or-empty(abstract) == false { counter(page).update(1) }
-      
+
     #show outline.entry.where(level: 1): it => {
       v(1.5em, weak: true)
       upper(strong(it))
@@ -246,8 +274,8 @@
 
     #outline(
       indent: outlines-indent,
-      depth: depth-toc
-    ) 
+      depth: depth-toc,
+    )
   ]
 
   // List of Figures
@@ -259,43 +287,108 @@
 
       #simple-outline(
         indent: outlines-indent,
-        target: figure.where(kind: image)
+        target: figure.where(kind: image),
       )
     ]
   }
 
   // List of Abbreviations
-  if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) {
-      page(
-        // numbering: "I"
-      )[
-        #set heading(outlined: false)
-        #glossary(
-          title: txt-list-of-abbreviations,
-          show-all: true,
-          sort: true,
-          ignore-case: true,
-        )
-      ]
-  }
-  
-  // List of Formulas
-  set math.equation(numbering: if thesis-compliant or show-list-of-formulas { "(1)" } else { none }, supplement: [#txt-supplement-formula])
+  if (
+    show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations)
+  ) {
+    page(
+      // numbering: "I"
+    )[
+      #set heading(outlined: false, numbering: none)
+      #glossy.glossary(
+        // title: txt-list-of-abbreviations,
+        show-all: true,
+        sort: true,
+        ignore-case: true,
+        theme: (
+          // Main glossary section
+          section: (title, body) => {
+            heading(level: 1, title)
+            body
+          },
+          // Group of related terms
+          group: (name, index, total, body) => {
+            // index = group index, total = total groups
+            if name != "" and total > 1 {
+              heading(level: 2, name)
+            }
+            body
+          },
+          // Individual glossary entry
+          entry: (entry, index, total) => layout(size => {
+            // index = entry index, total = total entries in group
+            let show-dots = true
 
-  show math.equation.where(block: true) : it => rect(width: 100%, fill: background-color)[
+            let output-base = [
+              #strong(entry.short)
+              #entry.label // **NOTE:** Label here!
+            ]
+            let output-single-line = [
+              #output-base
+              #if entry.long != none [ -- #entry.long ]
+            ]
+            let fits-in-one-line = (
+              measure({
+                output-single-line
+                entry.pages
+              }).width
+                < size.width
+            )
+
+            block(grid(
+              columns: (auto, 1fr, auto),
+              if fits-in-one-line { output-single-line } else { output-base },
+              if show-dots {
+                repeat(text(fill: luma(50%))[#h(0.05em) . #h(0.05em)])
+              },
+              entry.pages,
+            ))
+            if entry.description != none {
+              pad(x: 2em)[
+                #if not fits-in-one-line and entry.long != none {
+                  entry.long + "."
+                  linebreak()
+                }
+                #emph(entry.description)
+              ]
+              v(.3em)
+            }
+          }),
+        ),
+      )
+    ]
+  }
+
+  // List of Formulas
+  set math.equation(
+    numbering: if thesis-compliant or show-list-of-formulas { "(1)" } else {
+      none
+    },
+    supplement: [#txt-supplement-formula],
+  )
+
+  show math.equation.where(block: true): it => rect(
+    width: 100%,
+    fill: background-color,
+  )[
     #v(0.5em)
     #it
     #v(0.5em)
   ]
-  
-  if show-list-of-formulas {  
+
+  if show-list-of-formulas {
     page(
       // numbering: "I"
     )[
       #simple-outline(
         title: txt-list-of-formulas,
         indent: outlines-indent,
-        target: math.equation.where(block: true)
+        target: math.equation.where(block: true),
       )
     ]
   }
@@ -324,7 +417,7 @@
       #simple-outline(
         title: txt-list-of-tables,
         indent: outlines-indent,
-        target: figure.where(kind: table)
+        target: figure.where(kind: table),
       )
     ]
   }
@@ -335,14 +428,14 @@
     if elems.len() == 0 { return }
 
     heading(depth: 1)[ TODOs ]
-  
+
     for body in elems {
       text([+ #link(body.location(), body.text)], red)
     }
   }
 
   if show-list-of-todos { todos() }
-    
+
   counter(page).update(0)
 
   // Body
@@ -354,7 +447,9 @@
         text(weight: "bold", size: 8.5pt, fill: text-color)[
           #let h1 = hydra(1, skip-starting: false)
 
-          #let numbered-heading = to-string(h1).split(regex("[.]\s")).at(1, default: none)
+          #let numbered-heading = (
+            to-string(h1).split(regex("[.]\s")).at(1, default: none)
+          )
           #if numbered-heading != none {
             numbered-heading
           } else {
@@ -372,7 +467,7 @@
     footer: if thesis-compliant == false [
       #set text(weight: "regular")
       #let size = 11pt
-      
+
       #context {
         grid(
           columns: (1fr, auto, 1fr),
@@ -382,21 +477,22 @@
             #text(fill: text-color, size: size)[ #date ]
           ],
           [
-            #text(fill: primary-color, size: size + 1pt)[ *#title* ] \ 
+            #text(fill: primary-color, size: size + 1pt)[ *#title* ] \
             #text(fill: secondary-color, size: size)[ #subtitle ]
           ],
           [
-            #text(fill: text-color, size: size)[ #counter(page).display() / #counter(page).final().last() ]
-          ]
+            #text(fill: text-color, size: size)[
+              #counter(page).display() / #counter(page).final().last()
+            ]
+          ],
         )
       }
-    ]
-    else  [
-      #context{
+    ] else [
+      #context {
         set align(center)
         text(fill: text-color)[ #counter(page).display() ]
       }
-    ]
+    ],
   )
 
   set heading(numbering: "1.1.")
@@ -413,12 +509,15 @@
     ]
   }
 
-  if is-not-none-or-empty(list-of-attachements) and list-of-attachements.at(0).a != none {
+  if (
+    is-not-none-or-empty(list-of-attachements)
+      and list-of-attachements.at(0).a != none
+  ) {
     page[
       #heading(depth: 1, outlined: false)[ #txt-list-of-attachements ]
 
       #v(1.5em)
-      
+
       #let index = 1
       #for c in list-of-attachements {
         text()[ #txt-attachement A#index: #c.a ]
@@ -432,22 +531,23 @@
   if is-not-none-or-empty(custom-declaration) {
     page(
       header: "",
-      footer: ""
+      footer: "",
     )[
       #custom-declaration
     ]
-  }
-  else if thesis-compliant and is-not-none-or-empty(declaration-on-the-final-thesis) {
+  } else if (
+    thesis-compliant and is-not-none-or-empty(declaration-on-the-final-thesis)
+  ) {
     page(
       header: "",
-      footer: ""
+      footer: "",
     )[
       #get-declaration-on-the-final-thesis(
         lang: lang,
         legal-reference: declaration-on-the-final-thesis.legal-reference,
         thesis-name: declaration-on-the-final-thesis.thesis-name,
         consent-to-publication-in-the-library: declaration-on-the-final-thesis.consent-to-publication-in-the-library,
-        genitive-of-university: declaration-on-the-final-thesis.genitive-of-university
+        genitive-of-university: declaration-on-the-final-thesis.genitive-of-university,
       )
     ]
   }
