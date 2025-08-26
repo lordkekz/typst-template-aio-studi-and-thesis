@@ -292,7 +292,6 @@
 
   // List of Abbreviations
   if show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations) {
-      show: init-glossary.with(list-of-abbreviations)
       page(
         // numbering: "I"
       )[
@@ -409,6 +408,9 @@
   
   set heading(numbering: "1.1.")
   
+  // Must not be nested away so that it applies to the entire body
+  show: init-glossary.with(list-of-abbreviations)
+
   body
 
   // Literature, bibliography, attachments
