@@ -301,6 +301,11 @@
 
   if show-list-of-todos { todos() }
 
+  // Reset page counter before body's first page is started but after ending
+  // final page of frontmatter
+  pagebreak(weak: true)
+  counter(page).update(1)
+
   // Body
   set page(
     numbering: "1",
@@ -359,7 +364,6 @@
       // }
     ],
   )
-  counter(page).update(0)
 
   set heading(numbering: "1.1.")
 
