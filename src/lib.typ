@@ -282,12 +282,91 @@
     ]
   }
 
-  // List of Abbreviations
+  let todos() = context {
+    let elems = query(<todo>)
+
+    if elems.len() == 0 { return }
+
+    heading(depth: 1, outlined: false)[ TODOs ]
+
+    for body in elems {
+      text([+ #link(body.location(), body.text)], red)
+    }
+  }
+
+  if show-list-of-todos { todos() }
+
+  // Body
+  set page(
+    numbering: "1",
+    header: context {
+      set par(spacing: 2 * line-spacing)
+      if thesis-compliant {
+        text(weight: "bold", size: 8.5pt, fill: text-color)[
+          #let h1 = hydra(1, skip-starting: false)
+
+          #let numbered-heading = (
+            to-string(h1).split(regex("[.]\s")).at(1, default: none)
+          )
+          #if numbered-heading != none {
+            numbered-heading
+          } else {
+            h1
+          }
+          #h(1fr)
+          #if here().page-numbering() != none {
+            counter(page).display(here().page-numbering())
+          }
+        ]
+        v(-.9em)
+        line(length: 100%, stroke: 1.5pt + background-color)
+      }
+    },
+    footer: if thesis-compliant == false [
+      #set text(weight: "regular")
+      #let size = 11pt
+
+      #context {
+        grid(
+          columns: (1fr, auto, 1fr),
+          align: (left, center, right),
+          gutter: size,
+          [
+            #text(fill: text-color, size: size)[ #date ]
+          ],
+          [
+            #text(fill: primary-color, size: size + 1pt)[ *#title* ] \
+            #text(fill: secondary-color, size: size)[ #subtitle ]
+          ],
+          [
+            #text(fill: text-color, size: size)[
+              #counter(page).display() / #counter(page).final().last()
+            ]
+          ],
+        )
+      }
+    ] else [
+      #context {
+        set align(center)
+        text(fill: text-color)[ #counter(page).display() ]
+      }
+    ],
+  )
+  counter(page).update(0)
+
+  set heading(numbering: "1.1.")
+
+  body
+
+  // Literature, bibliography, attachments
+  set heading(numbering: none)
+
+  // List of Terms (Glossary or Index)
   if (
     show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations)
   ) {
     page()[
-      #set heading(outlined: false, numbering: none)
+      #show heading.where(level: 2): set heading(outlined: false)
       #glossy.glossary(
         // title: txt-list-of-abbreviations,
         show-all: true,
@@ -404,88 +483,9 @@
     ]
   }
 
-  let todos() = context {
-    let elems = query(<todo>)
-
-    if elems.len() == 0 { return }
-
-    heading(depth: 1, outlined: false)[ TODOs ]
-
-    for body in elems {
-      text([+ #link(body.location(), body.text)], red)
-    }
-  }
-
-  if show-list-of-todos { todos() }
-
-  // Body
-  set page(
-    numbering: "1",
-    header: context {
-      set par(spacing: 2 * line-spacing)
-      if thesis-compliant {
-        text(weight: "bold", size: 8.5pt, fill: text-color)[
-          #let h1 = hydra(1, skip-starting: false)
-
-          #let numbered-heading = (
-            to-string(h1).split(regex("[.]\s")).at(1, default: none)
-          )
-          #if numbered-heading != none {
-            numbered-heading
-          } else {
-            h1
-          }
-          #h(1fr)
-          #if here().page-numbering() != none {
-            counter(page).display(here().page-numbering())
-          }
-        ]
-        v(-.9em)
-        line(length: 100%, stroke: 1.5pt + background-color)
-      }
-    },
-    footer: if thesis-compliant == false [
-      #set text(weight: "regular")
-      #let size = 11pt
-
-      #context {
-        grid(
-          columns: (1fr, auto, 1fr),
-          align: (left, center, right),
-          gutter: size,
-          [
-            #text(fill: text-color, size: size)[ #date ]
-          ],
-          [
-            #text(fill: primary-color, size: size + 1pt)[ *#title* ] \
-            #text(fill: secondary-color, size: size)[ #subtitle ]
-          ],
-          [
-            #text(fill: text-color, size: size)[
-              #counter(page).display() / #counter(page).final().last()
-            ]
-          ],
-        )
-      }
-    ] else [
-      #context {
-        set align(center)
-        text(fill: text-color)[ #counter(page).display() ]
-      }
-    ],
-  )
-  counter(page).update(0)
-
-  set heading(numbering: "1.1.")
-
-  body
-
-  // Literature, bibliography, attachments
-  set heading(numbering: none)
-
   if is-not-none-or-empty(literature-and-bibliography) {
     page[
-      #heading(depth: 1, outlined: false)[ #txt-literature-and-bibliography ]
+      #heading(depth: 1, outlined: true)[#txt-literature-and-bibliography]
       #literature-and-bibliography
     ]
   }

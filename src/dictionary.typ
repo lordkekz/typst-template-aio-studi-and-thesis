@@ -1,4 +1,6 @@
-#import "@preview/linguify:0.4.2": set-database as initialize-dictionary, linguify
+#import "@preview/linguify:0.4.2": (
+  linguify, set-database as initialize-dictionary,
+)
 
 #let use-dictionary() = initialize-dictionary(toml("lang.toml"))
 
@@ -12,8 +14,12 @@
 #let txt-submission-date = linguify("submission-date")
 
 // Declaration on the Final Thesis
-#let txt-declaration-on-the-final-thesis = linguify("declaration-on-the-final-thesis")
-#let txt-declaration-on-the-final-thesis-first-part = linguify("declaration-on-the-final-thesis-first-part")
+#let txt-declaration-on-the-final-thesis = linguify(
+  "declaration-on-the-final-thesis",
+)
+#let txt-declaration-on-the-final-thesis-first-part = linguify(
+  "declaration-on-the-final-thesis-first-part",
+)
 
 // Signing
 #let txt-location = linguify("location")
@@ -27,7 +33,8 @@
 #let txt-list-of-formulas = linguify("list-of-formulas")
 #let txt-supplement-formula = linguify("supplement-formula")
 #let txt-list-of-tables = linguify("list-of-tables")
-#let txt-literature-and-bibliography = linguify("literature-and-bibliography")
+// #let txt-literature-and-bibliography = linguify("literature-and-bibliography")
+#let txt-literature-and-bibliography = "Bibliography" // linguify produces context which can't be converted to string for outline and PDF bookmarks
 #let txt-list-of-attachements = linguify("list-of-attachements")
 
 // Other
@@ -55,4 +62,6 @@
 #let txt-retro-measures = linguify("retro-measures")
 
 #let txt-user-story-title = linguify("user-story-title")
-#let txt-user-story-acceptance-criteria = linguify("user-story-acceptance-criteria")
+#let txt-user-story-acceptance-criteria = linguify(
+  "user-story-acceptance-criteria",
+)
