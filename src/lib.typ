@@ -212,7 +212,12 @@
     if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
   )
 
-  set page(numbering: "I.", header: none)
+  set page(
+    numbering: "I.",
+    header: none,
+    // Hide footer containing page number
+    footer: none,
+  )
   counter(page).update(1)
 
   set par(
@@ -346,10 +351,12 @@
         )
       }
     ] else [
-      #context {
-        set align(center)
-        text(fill: text-color)[ #counter(page).display() ]
-      }
+      // Don't put page number in footer when thesis-compliant
+      // (it's already in header)
+      // #context {
+      //   set align(center)
+      //   text(fill: text-color)[ #counter(page).display() ]
+      // }
     ],
   )
   counter(page).update(0)
