@@ -212,9 +212,8 @@
     if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
   )
 
-  set page(
-    numbering: none,
-  )
+  set page(numbering: "I.", header: none)
+  counter(page).update(1)
 
   set par(
     first-line-indent: 1em,
@@ -250,21 +249,14 @@
 
   // Abstract
   if is-not-none-or-empty(abstract) {
-    page(
-      // numbering: "I"
-      header: none,
-    )[
-      #counter(page).update(1)
+    page()[
       #heading(depth: 1, outlined: false)[ #txt-abstract ]
       #abstract
     ]
   }
 
   // Table of contents (TOC)
-  page(
-    // numbering: "I"
-    header: none,
-  )[
+  page()[
     #if is-not-none-or-empty(abstract) == false { counter(page).update(1) }
 
     #show outline.entry.where(level: 1): it => {
@@ -280,9 +272,7 @@
 
   // List of Figures
   if show-list-of-figures {
-    page(
-      // numbering: "I"
-    )[
+    page()[
       #heading(depth: 1, outlined: false)[ #txt-list-of-figures ]
 
       #simple-outline(
@@ -296,9 +286,7 @@
   if (
     show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations)
   ) {
-    page(
-      // numbering: "I"
-    )[
+    page()[
       #set heading(outlined: false, numbering: none)
       #glossy.glossary(
         // title: txt-list-of-abbreviations,
@@ -382,9 +370,7 @@
   ]
 
   if show-list-of-formulas {
-    page(
-      // numbering: "I"
-    )[
+    page()[
       #simple-outline(
         title: txt-list-of-formulas,
         indent: outlines-indent,
@@ -397,9 +383,7 @@
   if is-not-none-or-empty(custom-outlines) {
     for o in custom-outlines {
       if o.title != none and o.custom != none {
-        page(
-          // numbering: "I"
-        )[
+        page()[
           #if is-not-none-or-empty(o.title) {
             heading(depth: 1)[ #o.title ]
           }
@@ -411,9 +395,7 @@
 
   // List of Tables
   if show-list-of-tables {
-    page(
-      // numbering: "I"
-    )[
+    page()[
       #simple-outline(
         title: txt-list-of-tables,
         indent: outlines-indent,
@@ -427,7 +409,7 @@
 
     if elems.len() == 0 { return }
 
-    heading(depth: 1)[ TODOs ]
+    heading(depth: 1, outlined: false)[ TODOs ]
 
     for body in elems {
       text([+ #link(body.location(), body.text)], red)
@@ -435,8 +417,6 @@
   }
 
   if show-list-of-todos { todos() }
-
-  counter(page).update(0)
 
   // Body
   set page(
@@ -494,6 +474,7 @@
       }
     ],
   )
+  counter(page).update(0)
 
   set heading(numbering: "1.1.")
 
