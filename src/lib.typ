@@ -1,4 +1,5 @@
-#import "@preview/glossy:0.8.0"
+// #import "@preview/glossy:0.8.0"
+#import "../../glossy-fork/glossy/lib.typ" as glossy
 #import "@preview/codly:1.3.0": *
 
 #import "utils.typ": *
@@ -410,10 +411,46 @@
               #output-base
               #if entry.long != none [ -- #entry.long ]
             ]
+
+            // The glossy fork provides entry.pages as array of `link`s instead
+            // of a context. This allows us to group consecutive pages:
+            let backlinks = entry
+              .pages // Parse out integer of page number, but remember original `link`
+              .map(x => (
+                int(x.body.text),
+                x,
+              ))
+              .fold((), (a, b) => {
+                // Accumulater is an array of dicts (lo: .., hi: ..) which each
+                // store the start and end of a span of consecutive page numbers
+                if a == none or a == () {
+                  return ((lo: b, hi: b),)
+                }
+                if (
+                  a.last().at("hi").at(0) + 1 == b.at(0)
+                ) {
+                  // Update hi end of active span
+                  a.last() = (lo: a.last().at("lo"), hi: b)
+                } else {
+                  // Start new span
+                  a.push((lo: b, hi: b))
+                }
+                return a
+              })
+              .map(x => {
+                if (x.at("lo").at(0) == x.at("hi").at(0)) {
+                  // Show single page number
+                  x.at("lo").at(1)
+                } else [
+                  // Show low and high page number, seperated by a minus
+                  #x.at("lo").at(1)-#x.at("hi").at(1)
+                ]
+              })
+              .join(",")
             let fits-in-one-line = (
               measure({
                 output-single-line
-                entry.pages
+                backlinks
               }).width
                 < size.width
             )
@@ -424,7 +461,7 @@
               if show-dots {
                 repeat(text(fill: luma(50%))[#h(0.05em) . #h(0.05em)])
               },
-              entry.pages,
+              backlinks,
             ))
             if entry.description != none {
               pad(x: 2em)[
