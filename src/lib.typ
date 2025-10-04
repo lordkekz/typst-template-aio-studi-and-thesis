@@ -209,9 +209,16 @@
 
   // Content basics
   show heading.where(level: 1): set text(fill: text-color, size: 1.4em)
-  show heading.where(level: 1): it => (
-    if thesis-compliant { colbreak(weak: true) } + it + v(h1-spacing)
-  )
+  show heading.where(level: 1): it => {
+    if thesis-compliant {
+      // FIXME: Use colbreak instead to support multi-col layouts.
+      // Colbreak currently gives broken page numbers and links.
+      // See: https://github.com/typst/typst/issues/5471
+      pagebreak(weak: true)
+    }
+    it
+    v(h1-spacing)
+  }
 
   set page(
     numbering: "I.",
