@@ -384,183 +384,177 @@
   if (
     show-list-of-abbreviations and is-not-none-or-empty(list-of-abbreviations)
   ) {
-    page()[
-      #show heading.where(level: 2): set heading(outlined: false)
-      #glossy.glossary(
-        // title: txt-list-of-abbreviations,
-        show-all: true,
-        sort: true,
-        ignore-case: true,
-        theme: (
-          // Main glossary section
-          section: (title, body) => {
-            heading(level: 1, title)
-            body
-          },
-          // Group of related terms
-          group: (name, index, total, body) => {
-            // index = group index, total = total groups
-            if name != "" and total > 1 {
-              heading(level: 2, name)
-            }
-            body
-          },
-          // Individual glossary entry
-          entry: (entry, index, total) => layout(size => {
-            // index = entry index, total = total entries in group
-            let show-dots = true
+    pagebreak()
+    show heading.where(level: 2): set heading(outlined: false)
+    glossy.glossary(
+      // title: txt-list-of-abbreviations,
+      show-all: true,
+      sort: true,
+      ignore-case: true,
+      theme: (
+        // Main glossary section
+        section: (title, body) => {
+          heading(level: 1, title)
+          body
+        },
+        // Group of related terms
+        group: (name, index, total, body) => {
+          // index = group index, total = total groups
+          if name != "" and total > 1 {
+            heading(level: 2, name)
+          }
+          body
+        },
+        // Individual glossary entry
+        entry: (entry, index, total) => layout(size => {
+          // index = entry index, total = total entries in group
+          let show-dots = true
 
-            let output-base = [
-              #strong(entry.short)
-              #entry.label // **NOTE:** Label here!
-            ]
-            let output-single-line = [
-              #output-base
-              #if entry.long != none [ -- #entry.long ]
-            ]
+          let output-base = [
+            #strong(entry.short)
+            #entry.label // **NOTE:** Label here!
+          ]
+          let output-single-line = [
+            #output-base
+            #if entry.long != none [ -- #entry.long ]
+          ]
 
-            // The glossy fork provides entry.pages as array of `link`s instead
-            // of a context. This allows us to group consecutive pages:
-            let backlinks = entry
-              .pages // Parse out integer of page number, but remember original `link`
-              .map(x => (
-                int(x.body.text),
-                x,
-              ))
-              .fold((), (a, b) => {
-                // Accumulater is an array of dicts (lo: .., hi: ..) which each
-                // store the start and end of a span of consecutive page numbers
-                if a == none or a == () {
-                  return ((lo: b, hi: b),)
-                }
-                if (
-                  a.last().at("hi").at(0) + 1 == b.at(0)
-                ) {
-                  // Update hi end of active span
-                  a.last() = (lo: a.last().at("lo"), hi: b)
-                } else {
-                  // Start new span
-                  a.push((lo: b, hi: b))
-                }
-                return a
-              })
-              .map(x => {
-                if (x.at("lo").at(0) == x.at("hi").at(0)) {
-                  // Show single page number
-                  x.at("lo").at(1)
-                } else [
-                  // Show low and high page number, seperated by a minus
-                  #x.at("lo").at(1)-#x.at("hi").at(1)
-                ]
-              })
-              .join(",")
-            let fits-in-one-line = (
-              measure({
-                output-single-line
-                backlinks
-              }).width
-                < size.width
-            )
-
-            block(grid(
-              columns: (auto, 1fr, auto),
-              if fits-in-one-line { output-single-line } else { output-base },
-              if show-dots {
-                repeat(text(fill: luma(50%))[#h(0.05em) . #h(0.05em)])
-              },
-              backlinks,
+          // The glossy fork provides entry.pages as array of `link`s instead
+          // of a context. This allows us to group consecutive pages:
+          let backlinks = entry
+            .pages // Parse out integer of page number, but remember original `link`
+            .map(x => (
+              int(x.body.text),
+              x,
             ))
-            if entry.description != none {
-              pad(x: 2em)[
-                #if not fits-in-one-line and entry.long != none {
-                  entry.long + "."
-                  linebreak()
-                }
-                #emph(entry.description)
+            .fold((), (a, b) => {
+              // Accumulater is an array of dicts (lo: .., hi: ..) which each
+              // store the start and end of a span of consecutive page numbers
+              if a == none or a == () {
+                return ((lo: b, hi: b),)
+              }
+              if (
+                a.last().at("hi").at(0) + 1 == b.at(0)
+              ) {
+                // Update hi end of active span
+                a.last() = (lo: a.last().at("lo"), hi: b)
+              } else {
+                // Start new span
+                a.push((lo: b, hi: b))
+              }
+              return a
+            })
+            .map(x => {
+              if (x.at("lo").at(0) == x.at("hi").at(0)) {
+                // Show single page number
+                x.at("lo").at(1)
+              } else [
+                // Show low and high page number, seperated by a minus
+                #x.at("lo").at(1)-#x.at("hi").at(1)
               ]
-              v(.3em)
-            }
-          }),
-        ),
-      )
-    ]
+            })
+            .join(",")
+          let fits-in-one-line = (
+            measure({
+              output-single-line
+              backlinks
+            }).width
+              < size.width
+          )
+
+          block(grid(
+            columns: (auto, 1fr, auto),
+            if fits-in-one-line { output-single-line } else { output-base },
+            if show-dots {
+              repeat(text(fill: luma(50%))[#h(0.05em) . #h(0.05em)])
+            },
+            backlinks,
+          ))
+          if entry.description != none {
+            pad(x: 2em)[
+              #if not fits-in-one-line and entry.long != none {
+                entry.long + "."
+                linebreak()
+              }
+              #emph(entry.description)
+            ]
+            v(.3em)
+          }
+        }),
+      ),
+    )
   }
 
   // List of Formulas
-  set math.equation(
-    numbering: if thesis-compliant or show-list-of-formulas { "(1)" } else {
-      none
-    },
-    supplement: [#txt-supplement-formula],
-  )
-
-  show math.equation.where(block: true): it => rect(
-    width: 100%,
-    fill: background-color,
-  )[
-    #v(0.5em)
-    #it
-    #v(0.5em)
-  ]
-
   if show-list-of-formulas {
-    page()[
-      #simple-outline(
-        title: txt-list-of-formulas,
-        indent: outlines-indent,
-        target: math.equation.where(block: true),
-      )
+    pagebreak()
+    set math.equation(
+      numbering: if thesis-compliant or show-list-of-formulas { "(1)" } else {
+        none
+      },
+      supplement: [#txt-supplement-formula],
+    )
+
+    show math.equation.where(block: true): it => rect(
+      width: 100%,
+      fill: background-color,
+    )[
+      #v(0.5em)
+      #it
+      #v(0.5em)
     ]
+
+    simple-outline(
+      title: txt-list-of-formulas,
+      indent: outlines-indent,
+      target: math.equation.where(block: true),
+    )
   }
 
   // Custom outlines
   if is-not-none-or-empty(custom-outlines) {
     for o in custom-outlines {
       if o.title != none and o.custom != none {
-        page()[
-          #if is-not-none-or-empty(o.title) {
-            heading(depth: 1)[ #o.title ]
-          }
-          #o.custom
-        ]
+        pagebreak()
+        if is-not-none-or-empty(o.title) {
+          heading(depth: 1)[ #o.title ]
+        }
+        o.custom
       }
     }
   }
 
   // List of Tables
   if show-list-of-tables {
-    page()[
-      #simple-outline(
-        title: txt-list-of-tables,
-        indent: outlines-indent,
-        target: figure.where(kind: table),
-      )
-    ]
+    pagebreak()
+    simple-outline(
+      title: txt-list-of-tables,
+      indent: outlines-indent,
+      target: figure.where(kind: table),
+    )
   }
 
   if is-not-none-or-empty(literature-and-bibliography) {
-    page[
-      #heading(depth: 1, outlined: true)[#txt-literature-and-bibliography]
-      #literature-and-bibliography
-    ]
+    pagebreak()
+    heading(depth: 1, outlined: true)[#txt-literature-and-bibliography]
+    literature-and-bibliography
   }
 
   if (
     is-not-none-or-empty(list-of-attachements)
       and list-of-attachements.at(0).a != none
   ) {
-    page[
-      #heading(depth: 1, outlined: false)[ #txt-list-of-attachements ]
+    pagebreak()
+    heading(depth: 1, outlined: false)[ #txt-list-of-attachements ]
 
-      #v(1.5em)
+    v(1.5em)
 
-      #let index = 1
-      #for c in list-of-attachements {
-        text()[ #txt-attachement A#index: #c.a ]
-        v(1em)
-        index = index + 1
-      }
-    ]
+    let index = 1
+    for c in list-of-attachements {
+      text()[ #txt-attachement A#index: #c.a ]
+      v(1em)
+      index = index + 1
+    }
   }
 
   // Declaration
