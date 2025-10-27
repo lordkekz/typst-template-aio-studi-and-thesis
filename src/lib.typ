@@ -262,26 +262,22 @@
 
   // Abstract
   if is-not-none-or-empty(abstract) {
-    page()[
-      #heading(depth: 1, outlined: false)[ #txt-abstract ]
-      #abstract
-    ]
+    pagebreak()
+    heading(depth: 1, outlined: false)[ #txt-abstract ]
+    abstract
   }
 
   // Table of contents (TOC)
-  page()[
-    #if is-not-none-or-empty(abstract) == false { counter(page).update(1) }
-
-    #show outline.entry.where(level: 1): it => {
-      v(1.5em, weak: true)
-      upper(strong(it))
-    }
-
-    #outline(
-      indent: outlines-indent,
-      depth: depth-toc,
-    )
-  ]
+  pagebreak()
+  if is-not-none-or-empty(abstract) == false { counter(page).update(1) }
+  show outline.entry.where(level: 1): it => {
+    v(1.5em, weak: true)
+    upper(strong(it))
+  }
+  outline(
+    indent: outlines-indent,
+    depth: depth-toc,
+  )
 
   // List of Figures
   if show-list-of-figures {
