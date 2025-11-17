@@ -205,7 +205,6 @@
   } else {
     custom-cover-sheet
   }
-  pagebreak()
 
   // Content basics
   show heading.where(level: 1): set text(fill: text-color, size: 1.4em)
@@ -555,12 +554,9 @@
 
   // Declaration
   if is-not-none-or-empty(custom-declaration) {
-    page(
-      header: "",
-      footer: "",
-    )[
-      #custom-declaration
-    ]
+    set page(header: "", footer: "")
+
+    custom-declaration
   } else if (
     thesis-compliant and is-not-none-or-empty(declaration-on-the-final-thesis)
   ) {
