@@ -254,8 +254,14 @@
 
   // Caption above figures like ACM
   set figure.caption(position: top)
-  // Booktabs rules
-  set table(stroke: none)
+  // Style tables according to booktabs. All cells get bottom 1pt, but the lower
+  // cells' top overrides the upper cells' bottom. Thus, the header has top and
+  // bottom, whereas the last line only has bottom. Adapted from Typst's table
+  // guide.
+  set table(stroke: (_, y) => (
+    top: if y <= 1 { 1pt } else { 0pt },
+    bottom: 1pt,
+  ))
 
   show link: set text(fill: secondary-color.darken(60%))
 
